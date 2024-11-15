@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace AsGuard.Api.Validator.Middelware;
 
-public class GuardMiddleware
+public class GuardMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public GuardMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
+    private readonly RequestDelegate _next = next;
 
     public async Task InvokeAsync(HttpContext context)
     {
