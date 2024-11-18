@@ -57,9 +57,60 @@ public class Guard
             return this;
         }
 
-        // TODO Add check for negative or zero value int
-        // TODO Add check for empty collection
-        // TODO Add check for empty string
+        /// <summary>
+        /// Ensures that the specified integer argument is greater than zero. 
+        /// Throws an <see cref="BadRequestException"/> if the value is zero or negative.
+        /// </summary>
+        /// <param name="parameter">The integer to check.</param>
+        /// <param name="parameterName">The name of the parameter being checked.</param>
+        /// <returns>The current <see cref="GuardArgument"/> instance for chaining further validations.</returns>
+        /// <exception cref="BadRequestException">Thrown if <paramref name="parameter"/> is zero or negative.</exception>
+        public GuardArgument NegativeOrZero(int parameter, string parameterName)
+        {
+            if (parameter <= 0)
+            {
+                throw new BadRequestException($"Argument {parameterName} must be greater than zero.");
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Ensures that the specified collection is not empty. 
+        /// Throws an <see cref="BadRequestException"/> if the collection is null or contains no elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the collection.</typeparam>
+        /// <param name="parameter">The collection to check.</param>
+        /// <param name="parameterName">The name of the parameter being checked.</param>
+        /// <returns>The current <see cref="GuardArgument"/> instance for chaining further validations.</returns>
+        /// <exception cref="BadRequestException">Thrown if <paramref name="parameter"/> is null or empty.</exception>
+        public GuardArgument EmptyCollection<T>(IEnumerable<T>? parameter, string parameterName)
+        {
+            if (parameter == null || !parameter.Any())
+            {
+                throw new BadRequestException($"Argument {parameterName} cannot be null or an empty collection.");
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Ensures that the specified string is not null or empty. 
+        /// Throws an <see cref="BadRequestException"/> if the string is null or empty.
+        /// </summary>
+        /// <param name="parameter">The string to check.</param>
+        /// <param name="parameterName">The name of the parameter being checked.</param>
+        /// <returns>The current <see cref="GuardArgument"/> instance for chaining further validations.</returns>
+        /// <exception cref="BadRequestException">Thrown if <paramref name="parameter"/> is null or empty.</exception>
+        public GuardArgument EmptyString(string? parameter, string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(parameter))
+            {
+                throw new BadRequestException($"Argument {parameterName} cannot be null or empty.");
+            }
+
+            return this;
+        }
     }
 
     /// <summary>
@@ -102,8 +153,42 @@ public class Guard
             return this;
         }
 
-        // TODO Add check for empty collection
-        // TODO Add check for empty string
+        /// <summary>
+        /// Ensures that the specified collection is not empty. 
+        /// Throws an <see cref="InternalServerErrorException"/> if the collection is null or contains no elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the collection.</typeparam>
+        /// <param name="collection">The collection to check.</param>
+        /// <param name="collectionName">The name of the parameter associated with the value (used for exception clarity).</param>
+        /// <returns>The current <see cref="GuardValue"/> instance for chaining further validations.</returns>
+        /// <exception cref="InternalServerErrorException">Thrown if <paramref name="collection"/> is null or empty.</exception>
+        public GuardValue EmptyCollection<T>(IEnumerable<T>? collection, string collectionName)
+        {
+            if (collection == null || !collection.Any())
+            {
+                throw new InternalServerErrorException($"Value {collectionName} cannot be null or an empty collection.");
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Ensures that the specified string is not null or empty. 
+        /// Throws an <see cref="InternalServerErrorException"/> if the string is null or empty.
+        /// </summary>
+        /// <param name="value">The string to check.</param>
+        /// <param name="parameterName">The name of the parameter associated with the value (used for exception clarity).</param>
+        /// <returns>The current <see cref="GuardValue"/> instance for chaining further validations.</returns>
+        /// <exception cref="InternalServerErrorException">Thrown if <paramref name="value"/> is null or empty.</exception>
+        public GuardValue EmptyString(string? value, string parameterName)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new InternalServerErrorException($"Value {parameterName} cannot be null or empty.");
+            }
+
+            return this;
+        }
     }
 
     public class GuardEntity
@@ -125,7 +210,41 @@ public class Guard
             return this;
         }
 
-        // TODO Add check for empty collection
-        // TODO Add check for empty string
+        /// <summary>
+        /// Ensures that the specified entity collection is not empty. 
+        /// Throws an <see cref="NotFoundException"/> if the collection is null or contains no elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the collection.</typeparam>
+        /// <param name="entity">The collection entity to check.</param>
+        /// <param name="entityName">The name of the entity being validated (used for exception clarity).</param>
+        /// <returns>The current <see cref="GuardEntity"/> instance for chaining further validations.</returns>
+        /// <exception cref="NotFoundException">Thrown if <paramref name="entity"/> is null or empty.</exception>
+        public GuardEntity EmptyCollection<T>(IEnumerable<T>? entity, string entityName)
+        {
+            if (entity == null || !entity.Any())
+            {
+                throw new NotFoundException($"Entity {entityName} cannot be null or an empty collection.");
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Ensures that the specified entity string is not null or empty. 
+        /// Throws an <see cref="NotFoundException"/> if the string is null or empty.
+        /// </summary>
+        /// <param name="entity">The string entity to check.</param>
+        /// <param name="entityName">The name of the entity being validated (used for exception clarity).</param>
+        /// <returns>The current <see cref="GuardEntity"/> instance for chaining further validations.</returns>
+        /// <exception cref="NotFoundException">Thrown if <paramref name="entity"/> is null or empty.</exception>
+        public GuardEntity EmptyString(string? entity, string entityName)
+        {
+            if (string.IsNullOrWhiteSpace(entity))
+            {
+                throw new NotFoundException($"Entity {entityName} cannot be null or empty.");
+            }
+
+            return this;
+        }
     }
 }
